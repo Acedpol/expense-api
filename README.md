@@ -4,7 +4,7 @@ API REST para gestión de gastos personales. Proyecto de portfolio con foco en *
 
 ## Stack
 
-- FastAPI + SQLAlchemy 2.0 + Alembic (pendiente de configurar, ver hitos)
+- FastAPI + SQLAlchemy 2.0 + Alembic (migraciones versionadas del esquema)
 - SQLite en local sin Docker (rápido para desarrollar) / PostgreSQL vía Docker Compose (real)
 - JWT (OAuth2 password flow) para auth
 - pytest + httpx para tests
@@ -16,10 +16,31 @@ API REST para gestión de gastos personales. Proyecto de portfolio con foco en *
 python -m venv .venv
 source .venv/bin/activate
 pip install -r requirements-dev.txt
+alembic upgrade head
 uvicorn app.main:app --reload
 ```
 
 Docs interactivas en `http://localhost:8000/docs`.
+
+## Migraciones (Alembic)
+
+El esquema de la base de datos ya no lo crea la app al arrancar — lo crean las migraciones. Flujo habitual:
+
+```bash
+# después de cambiar un modelo en app/models/
+alembic revision --autogenerate -m "descripción del cambio"
+# revisar el archivo generado en alembic/versions/ antes de aplicarlo
+alembic upgrade head
+
+# deshacer la última migración
+alembic downgrade -1
+
+# ver el historial / en qué revisión está la DB actual
+alembic history --verbose
+alembic current
+```
+
+En Docker, `alembic upgrade head` se ejecuta automáticamente antes de arrancar uvicorn (ver `Dockerfile`).
 
 ## Arrancar con Docker Compose (PostgreSQL real)
 
@@ -37,6 +58,7 @@ pytest -v
 ## Estructura
 
 ```
+alembic/                # migraciones del esquema (versions/)
 app/
 ├── main.py            # entrypoint, routers, exception handlers
 ├── core/               # config y seguridad (hash, JWT)
@@ -58,10 +80,10 @@ Lo ya scaffoldeado (fases 0-2 del roadmap):
 - [x] Tests de integración de auth y CRUD básico
 - [x] CI (lint + test) en GitHub Actions
 - [x] Manejo de errores consistente (`{"error": ...}`)
+- [x] Migraciones con Alembic (esquema versionado, `create_all` eliminado de `main.py`)
 
 Pendiente (para seguir practicando encima de esta base):
 
-- [ ] Migraciones con Alembic (ahora mismo las tablas se crean con `create_all`, que sirve para desarrollo rápido pero no es lo que se usa en producción)
 - [ ] Tests unitarios de la capa `services/` (con mocks, sin DB)
 - [ ] Reporte de cobertura (`pytest-cov`) + badge en README
 - [ ] Rate limiting en `/auth/login`

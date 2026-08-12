@@ -4,10 +4,6 @@ from fastapi.responses import JSONResponse
 from starlette.exceptions import HTTPException as StarletteHTTPException
 
 from app.api.routes import auth, categories, expenses
-from app.db.base import Base
-from app.db.session import engine
-
-Base.metadata.create_all(bind=engine)
 
 app = FastAPI(title="Expense API", version="0.1.0")
 
