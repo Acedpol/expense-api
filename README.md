@@ -1,5 +1,8 @@
 # Expense API
 
+[![CI](https://github.com/Acedpol/expense-api/actions/workflows/ci.yml/badge.svg)](https://github.com/Acedpol/expense-api/actions/workflows/ci.yml)
+![coverage](https://img.shields.io/badge/coverage-95%25-brightgreen)
+
 API REST para gestión de gastos personales. Proyecto de portfolio con foco en **backend**: auth con JWT, CRUD, tests, Docker y CI/CD.
 
 ## Stack
@@ -53,7 +56,12 @@ docker compose up --build
 
 ```bash
 pytest -v
+
+# con cobertura (lo que corre en CI, falla si baja del 90%)
+pytest -v --cov=app --cov-report=term-missing --cov-fail-under=90
 ```
+
+El badge de cobertura es la última cifra medida manualmente — si baja de forma notable al añadir código, actualízalo.
 
 ## Estructura
 
@@ -82,9 +90,9 @@ Lo ya scaffoldeado (fases 0-2 del roadmap):
 - [x] Manejo de errores consistente (`{"error": ...}`)
 - [x] Migraciones con Alembic (esquema versionado, `create_all` eliminado de `main.py`)
 - [x] Tests unitarios de la capa `services/` (con mocks, sin DB — `tests/unit/`)
+- [x] Reporte de cobertura (`pytest-cov`, gate en CI al 90%, badge en README)
 
 Pendiente (para seguir practicando encima de esta base):
-- [ ] Reporte de cobertura (`pytest-cov`) + badge en README
 - [ ] Rate limiting en `/auth/login`
 - [ ] Logging estructurado
 - [ ] Deploy a Railway/Fly.io/Render + endpoint `/health` monitorizado
