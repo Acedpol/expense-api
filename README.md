@@ -91,9 +91,9 @@ Lo ya scaffoldeado (fases 0-2 del roadmap):
 - [x] Migraciones con Alembic (esquema versionado, `create_all` eliminado de `main.py`)
 - [x] Tests unitarios de la capa `services/` (con mocks, sin DB — `tests/unit/`)
 - [x] Reporte de cobertura (`pytest-cov`, gate en CI al 90%, badge en README)
+- [x] Rate limiting en `/auth/login` (5 intentos/min por IP, `slowapi`)
 
 Pendiente (para seguir practicando encima de esta base):
-- [ ] Rate limiting en `/auth/login`
 - [ ] Logging estructurado
 - [ ] Deploy a Railway/Fly.io/Render + endpoint `/health` monitorizado
 - [ ] (Stretch) Endpoint que categorice un gasto automáticamente llamando a un LLM

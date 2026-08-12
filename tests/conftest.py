@@ -4,6 +4,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.pool import StaticPool
 
+from app.core.limiter import limiter
 from app.db.base import Base
 from app.db.session import get_db
 from app.main import app
@@ -38,6 +39,7 @@ def client(db_session):
             pass
 
     app.dependency_overrides[get_db] = override_get_db
+    limiter.reset()
     with TestClient(app) as test_client:
         yield test_client
     app.dependency_overrides.clear()
