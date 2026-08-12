@@ -26,6 +26,15 @@ def create_category(
     return category_service.create_category(db, current_user.id, data)
 
 
+@router.get("/{category_id}", response_model=CategoryRead)
+def get_category(
+    category_id: int,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+) -> CategoryRead:
+    return category_service.get_category_or_404(db, current_user.id, category_id)
+
+
 @router.patch("/{category_id}", response_model=CategoryRead)
 def update_category(
     category_id: int,
