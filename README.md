@@ -92,9 +92,9 @@ Lo ya scaffoldeado (fases 0-2 del roadmap):
 - [x] Tests unitarios de la capa `services/` (con mocks, sin DB — `tests/unit/`)
 - [x] Reporte de cobertura (`pytest-cov`, gate en CI al 90%, badge en README)
 - [x] Rate limiting en `/auth/login` (5 intentos/min por IP, `slowapi`)
+- [x] Logging estructurado (JSON por request: método, ruta, status, duración, IP)
 
 Pendiente (para seguir practicando encima de esta base):
-- [ ] Logging estructurado
 - [ ] Deploy a Railway/Fly.io/Render + endpoint `/health` monitorizado
 - [ ] (Stretch) Endpoint que categorice un gasto automáticamente llamando a un LLM
 

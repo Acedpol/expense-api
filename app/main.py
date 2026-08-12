@@ -1,11 +1,18 @@
-from fastapi import FastAPI
+import logging
+import time
+
+from fastapi import FastAPI, Request
 from fastapi.exceptions import RequestValidationError
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, Response
 from slowapi.errors import RateLimitExceeded
 from starlette.exceptions import HTTPException as StarletteHTTPException
 
 from app.api.routes import auth, categories, expenses
 from app.core.limiter import limiter
+from app.core.logging import configure_logging
+
+configure_logging()
+request_logger = logging.getLogger("app.requests")
 
 app = FastAPI(title="Expense API", version="0.1.0")
 app.state.limiter = limiter
@@ -13,6 +20,25 @@ app.state.limiter = limiter
 app.include_router(auth.router)
 app.include_router(categories.router)
 app.include_router(expenses.router)
+
+
+@app.middleware("http")
+async def log_requests(request: Request, call_next) -> Response:
+    start = time.perf_counter()
+    response = await call_next(request)
+    duration_ms = round((time.perf_counter() - start) * 1000, 2)
+
+    request_logger.info(
+        "request handled",
+        extra={
+            "method": request.method,
+            "path": request.url.path,
+            "status_code": response.status_code,
+            "duration_ms": duration_ms,
+            "client_ip": request.client.host if request.client else None,
+        },
+    )
+    return response
 
 
 @app.get("/health", tags=["health"])
