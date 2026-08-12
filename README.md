@@ -81,10 +81,9 @@ Lo ya scaffoldeado (fases 0-2 del roadmap):
 - [x] CI (lint + test) en GitHub Actions
 - [x] Manejo de errores consistente (`{"error": ...}`)
 - [x] Migraciones con Alembic (esquema versionado, `create_all` eliminado de `main.py`)
+- [x] Tests unitarios de la capa `services/` (con mocks, sin DB — `tests/unit/`)
 
 Pendiente (para seguir practicando encima de esta base):
-
-- [ ] Tests unitarios de la capa `services/` (con mocks, sin DB)
 - [ ] Reporte de cobertura (`pytest-cov`) + badge en README
 - [ ] Rate limiting en `/auth/login`
 - [ ] Logging estructurado
