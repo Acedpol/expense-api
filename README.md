@@ -94,8 +94,8 @@ Lo ya scaffoldeado (fases 0-2 del roadmap):
 - [x] Rate limiting en `/auth/login` (5 intentos/min por IP, `slowapi`)
 - [x] Logging estructurado (JSON por request: método, ruta, status, duración, IP)
 
-Pendiente (para seguir practicando encima de esta base):
+Pendiente — requieren cuenta/credenciales externas propias, aplazados deliberadamente:
 - [ ] Deploy a Railway/Fly.io/Render + endpoint `/health` monitorizado
-- [ ] (Stretch) Endpoint que categorice un gasto automáticamente llamando a un LLM
+- [ ] (Stretch) Endpoint que categorice un gasto automáticamente llamando a un LLM (necesita API key propia)
 
 Cada uno de estos pendientes debería vivir como un issue individual en GitHub, con su propia rama y PR, para que el historial del repo muestre trabajo incremental.
