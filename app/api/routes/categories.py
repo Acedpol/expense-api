@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, status
+from fastapi import APIRouter, Depends, Query, status
 from sqlalchemy.orm import Session
 
 from app.api.deps import get_current_user
@@ -12,9 +12,12 @@ router = APIRouter(prefix="/categories", tags=["categories"])
 
 @router.get("", response_model=list[CategoryRead])
 def list_categories(
-    db: Session = Depends(get_db), current_user: User = Depends(get_current_user)
+    skip: int = Query(0, ge=0),
+    limit: int = Query(50, ge=1, le=200),
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
 ) -> list[CategoryRead]:
-    return category_service.list_categories(db, current_user.id)
+    return category_service.list_categories(db, current_user.id, skip, limit)
 
 
 @router.post("", response_model=CategoryRead, status_code=status.HTTP_201_CREATED)

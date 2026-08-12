@@ -5,8 +5,15 @@ from app.models.category import Category
 from app.schemas.category import CategoryCreate, CategoryUpdate
 
 
-def list_categories(db: Session, user_id: int) -> list[Category]:
-    return db.query(Category).filter(Category.user_id == user_id).all()
+def list_categories(db: Session, user_id: int, skip: int = 0, limit: int = 50) -> list[Category]:
+    return (
+        db.query(Category)
+        .filter(Category.user_id == user_id)
+        .order_by(Category.id)
+        .offset(skip)
+        .limit(limit)
+        .all()
+    )
 
 
 def create_category(db: Session, user_id: int, data: CategoryCreate) -> Category:

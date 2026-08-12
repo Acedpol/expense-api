@@ -7,10 +7,13 @@ from app.schemas.category import CategoryCreate, CategoryUpdate
 from app.services import category_service
 
 
-def test_list_categories_filters_by_user():
+def test_list_categories_filters_paginates_and_orders():
     db = MagicMock()
-    category_service.list_categories(db, user_id=1)
-    db.query.return_value.filter.return_value.all.assert_called_once()
+    category_service.list_categories(db, user_id=1, skip=10, limit=5)
+
+    offset_call = db.query.return_value.filter.return_value.order_by.return_value.offset
+    offset_call.assert_called_once_with(10)
+    offset_call.return_value.limit.assert_called_once_with(5)
 
 
 def test_create_category_sets_owner_and_persists():
