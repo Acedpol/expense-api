@@ -20,7 +20,9 @@ def test_list_expenses_paginates_and_orders():
 @patch("app.services.expense_service.get_category_or_404")
 def test_create_expense_validates_category_belongs_to_user(mock_get_category):
     db = MagicMock()
-    data = ExpenseCreate(amount=12.5, description="Cafe", date=date(2026, 1, 1), category_id=5)
+    data = ExpenseCreate(
+        amount=12.5, description="Cafe", date=date(2026, 1, 1), category_id=5
+    )
 
     result = expense_service.create_expense(db, user_id=1, data=data)
 
@@ -32,9 +34,13 @@ def test_create_expense_validates_category_belongs_to_user(mock_get_category):
 
 @patch("app.services.expense_service.get_category_or_404")
 def test_create_expense_propagates_404_for_foreign_category(mock_get_category):
-    mock_get_category.side_effect = HTTPException(status_code=404, detail="Category not found")
+    mock_get_category.side_effect = HTTPException(
+        status_code=404, detail="Category not found"
+    )
     db = MagicMock()
-    data = ExpenseCreate(amount=12.5, description="Cafe", date=date(2026, 1, 1), category_id=999)
+    data = ExpenseCreate(
+        amount=12.5, description="Cafe", date=date(2026, 1, 1), category_id=999
+    )
 
     with pytest.raises(HTTPException) as exc_info:
         expense_service.create_expense(db, user_id=1, data=data)
@@ -59,7 +65,9 @@ def test_update_expense_revalidates_new_category_ownership(mock_get_category):
     fake_expense = MagicMock(category_id=1)
     db.query.return_value.filter.return_value.first.return_value = fake_expense
 
-    expense_service.update_expense(db, user_id=1, expense_id=1, data=ExpenseUpdate(category_id=2))
+    expense_service.update_expense(
+        db, user_id=1, expense_id=1, data=ExpenseUpdate(category_id=2)
+    )
 
     mock_get_category.assert_called_once_with(db, 1, 2)
     assert fake_expense.category_id == 2
@@ -70,7 +78,9 @@ def test_update_expense_only_touches_provided_fields():
     fake_expense = MagicMock(amount=10, description="Old", date=date(2026, 1, 1))
     db.query.return_value.filter.return_value.first.return_value = fake_expense
 
-    expense_service.update_expense(db, user_id=1, expense_id=1, data=ExpenseUpdate(description="New"))
+    expense_service.update_expense(
+        db, user_id=1, expense_id=1, data=ExpenseUpdate(description="New")
+    )
 
     assert fake_expense.description == "New"
     assert fake_expense.amount == 10

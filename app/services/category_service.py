@@ -5,7 +5,9 @@ from app.models.category import Category
 from app.schemas.category import CategoryCreate, CategoryUpdate
 
 
-def list_categories(db: Session, user_id: int, skip: int = 0, limit: int = 50) -> list[Category]:
+def list_categories(
+    db: Session, user_id: int, skip: int = 0, limit: int = 50
+) -> list[Category]:
     return (
         db.query(Category)
         .filter(Category.user_id == user_id)
@@ -26,14 +28,20 @@ def create_category(db: Session, user_id: int, data: CategoryCreate) -> Category
 
 def get_category_or_404(db: Session, user_id: int, category_id: int) -> Category:
     category = (
-        db.query(Category).filter(Category.id == category_id, Category.user_id == user_id).first()
+        db.query(Category)
+        .filter(Category.id == category_id, Category.user_id == user_id)
+        .first()
     )
     if category is None:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Category not found")
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail="Category not found"
+        )
     return category
 
 
-def update_category(db: Session, user_id: int, category_id: int, data: CategoryUpdate) -> Category:
+def update_category(
+    db: Session, user_id: int, category_id: int, data: CategoryUpdate
+) -> Category:
     category = get_category_or_404(db, user_id, category_id)
     if data.name is not None:
         category.name = data.name

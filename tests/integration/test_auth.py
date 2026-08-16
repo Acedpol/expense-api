@@ -1,5 +1,7 @@
 def test_register_and_login(client):
-    response = client.post("/auth/register", json={"email": "a@example.com", "password": "secret123"})
+    response = client.post(
+        "/auth/register", json={"email": "a@example.com", "password": "secret123"}
+    )
     assert response.status_code == 201
     assert response.json()["email"] == "a@example.com"
 
@@ -11,13 +13,19 @@ def test_register_and_login(client):
 
 
 def test_register_duplicate_email_fails(client):
-    client.post("/auth/register", json={"email": "dup@example.com", "password": "secret123"})
-    response = client.post("/auth/register", json={"email": "dup@example.com", "password": "secret123"})
+    client.post(
+        "/auth/register", json={"email": "dup@example.com", "password": "secret123"}
+    )
+    response = client.post(
+        "/auth/register", json={"email": "dup@example.com", "password": "secret123"}
+    )
     assert response.status_code == 400
 
 
 def test_login_wrong_password_fails(client):
-    client.post("/auth/register", json={"email": "b@example.com", "password": "secret123"})
+    client.post(
+        "/auth/register", json={"email": "b@example.com", "password": "secret123"}
+    )
     response = client.post(
         "/auth/login", data={"username": "b@example.com", "password": "wrong"}
     )

@@ -19,10 +19,14 @@ class Expense(Base):
     amount: Mapped[float] = mapped_column(Numeric(10, 2), nullable=False)
     description: Mapped[str] = mapped_column(String(255), nullable=False)
     date: Mapped[date_] = mapped_column(Date, nullable=False)
-    created_at: Mapped[datetime] = mapped_column(DateTime, default=lambda: datetime.now(timezone.utc))
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime, default=lambda: datetime.now(timezone.utc)
+    )
 
     user_id: Mapped[int] = mapped_column(ForeignKey("users.id"), nullable=False)
-    category_id: Mapped[int] = mapped_column(ForeignKey("categories.id"), nullable=False)
+    category_id: Mapped[int] = mapped_column(
+        ForeignKey("categories.id"), nullable=False
+    )
 
     owner: Mapped["User"] = relationship(back_populates="expenses")
     category: Mapped["Category"] = relationship(back_populates="expenses")
