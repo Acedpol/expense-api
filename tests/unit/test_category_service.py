@@ -18,7 +18,9 @@ def test_list_categories_filters_paginates_and_orders():
 
 def test_create_category_sets_owner_and_persists():
     db = MagicMock()
-    result = category_service.create_category(db, user_id=1, data=CategoryCreate(name="Ocio"))
+    result = category_service.create_category(
+        db, user_id=1, data=CategoryCreate(name="Ocio")
+    )
     assert result.name == "Ocio"
     assert result.user_id == 1
     db.add.assert_called_once_with(result)
@@ -52,7 +54,9 @@ def test_update_category_applies_only_provided_fields():
     fake_category.name = "Old"
     db.query.return_value.filter.return_value.first.return_value = fake_category
 
-    category_service.update_category(db, user_id=1, category_id=1, data=CategoryUpdate(name="New"))
+    category_service.update_category(
+        db, user_id=1, category_id=1, data=CategoryUpdate(name="New")
+    )
 
     assert fake_category.name == "New"
     db.commit.assert_called_once()
@@ -64,7 +68,9 @@ def test_update_category_keeps_name_when_not_provided():
     fake_category.name = "Old"
     db.query.return_value.filter.return_value.first.return_value = fake_category
 
-    category_service.update_category(db, user_id=1, category_id=1, data=CategoryUpdate())
+    category_service.update_category(
+        db, user_id=1, category_id=1, data=CategoryUpdate()
+    )
 
     assert fake_category.name == "Old"
 

@@ -19,9 +19,12 @@ API REST para gestión de gastos personales. Proyecto de portfolio con foco en *
 python -m venv .venv
 source .venv/bin/activate
 pip install -r requirements-dev.txt
+pre-commit install
 alembic upgrade head
 uvicorn app.main:app --reload
 ```
+
+`pre-commit install` deja `ruff check --fix` y `ruff format` corriendo antes de cada commit, así un fallo de lint se detecta en tu máquina y no en el CI.
 
 Docs interactivas en `http://localhost:8000/docs`.
 

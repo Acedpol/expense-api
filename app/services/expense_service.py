@@ -6,7 +6,9 @@ from app.schemas.expense import ExpenseCreate, ExpenseUpdate
 from app.services.category_service import get_category_or_404
 
 
-def list_expenses(db: Session, user_id: int, skip: int = 0, limit: int = 50) -> list[Expense]:
+def list_expenses(
+    db: Session, user_id: int, skip: int = 0, limit: int = 50
+) -> list[Expense]:
     return (
         db.query(Expense)
         .filter(Expense.user_id == user_id)
@@ -33,13 +35,21 @@ def create_expense(db: Session, user_id: int, data: ExpenseCreate) -> Expense:
 
 
 def get_expense_or_404(db: Session, user_id: int, expense_id: int) -> Expense:
-    expense = db.query(Expense).filter(Expense.id == expense_id, Expense.user_id == user_id).first()
+    expense = (
+        db.query(Expense)
+        .filter(Expense.id == expense_id, Expense.user_id == user_id)
+        .first()
+    )
     if expense is None:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Expense not found")
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail="Expense not found"
+        )
     return expense
 
 
-def update_expense(db: Session, user_id: int, expense_id: int, data: ExpenseUpdate) -> Expense:
+def update_expense(
+    db: Session, user_id: int, expense_id: int, data: ExpenseUpdate
+) -> Expense:
     expense = get_expense_or_404(db, user_id, expense_id)
     if data.category_id is not None:
         get_category_or_404(db, user_id, data.category_id)

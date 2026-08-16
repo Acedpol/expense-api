@@ -15,9 +15,17 @@ class User(Base):
     __tablename__ = "users"
 
     id: Mapped[int] = mapped_column(primary_key=True)
-    email: Mapped[str] = mapped_column(String(255), unique=True, index=True, nullable=False)
+    email: Mapped[str] = mapped_column(
+        String(255), unique=True, index=True, nullable=False
+    )
     hashed_password: Mapped[str] = mapped_column(String(255), nullable=False)
-    created_at: Mapped[datetime] = mapped_column(DateTime, default=lambda: datetime.now(timezone.utc))
+    created_at: Mapped[datetime] = mapped_column(
+        DateTime, default=lambda: datetime.now(timezone.utc)
+    )
 
-    categories: Mapped[list["Category"]] = relationship(back_populates="owner", cascade="all, delete-orphan")
-    expenses: Mapped[list["Expense"]] = relationship(back_populates="owner", cascade="all, delete-orphan")
+    categories: Mapped[list["Category"]] = relationship(
+        back_populates="owner", cascade="all, delete-orphan"
+    )
+    expenses: Mapped[list["Expense"]] = relationship(
+        back_populates="owner", cascade="all, delete-orphan"
+    )
