@@ -16,7 +16,7 @@ from app.core.logging import configure_logging
 configure_logging()
 request_logger = logging.getLogger("app.requests")
 
-app = FastAPI(title="Expense API", version="1.0.0")
+app = FastAPI(title="Expense API", version="1.1.0")
 app.state.limiter = limiter
 
 app.add_middleware(
