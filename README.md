@@ -96,6 +96,7 @@ Lo ya scaffoldeado (fases 0-2 del roadmap):
 - [x] Reporte de cobertura (`pytest-cov`, gate en CI al 90%, badge en README)
 - [x] Rate limiting en `/auth/login` (5 intentos/min por IP, `slowapi`)
 - [x] Logging estructurado (JSON por request: método, ruta, status, duración, IP)
+- [x] CORS configurado (`CORS_ORIGINS` en `.env`, por defecto habilita `localhost:5173`/`3000` para el frontend)
 
 Pendiente — requieren cuenta/credenciales externas propias, aplazados deliberadamente:
 - [ ] Deploy a Railway/Fly.io/Render + endpoint `/health` monitorizado

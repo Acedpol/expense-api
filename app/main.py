@@ -3,11 +3,13 @@ import time
 
 from fastapi import FastAPI, Request
 from fastapi.exceptions import RequestValidationError
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse, Response
 from slowapi.errors import RateLimitExceeded
 from starlette.exceptions import HTTPException as StarletteHTTPException
 
 from app.api.routes import auth, categories, expenses
+from app.core.config import settings
 from app.core.limiter import limiter
 from app.core.logging import configure_logging
 
@@ -16,6 +18,14 @@ request_logger = logging.getLogger("app.requests")
 
 app = FastAPI(title="Expense API", version="1.0.0")
 app.state.limiter = limiter
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=settings.cors_origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 app.include_router(auth.router)
 app.include_router(categories.router)
