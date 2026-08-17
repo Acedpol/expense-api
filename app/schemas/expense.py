@@ -1,4 +1,4 @@
-from datetime import date
+from datetime import date as date_
 from typing import Optional
 
 from pydantic import BaseModel, ConfigDict
@@ -7,14 +7,14 @@ from pydantic import BaseModel, ConfigDict
 class ExpenseCreate(BaseModel):
     amount: float
     description: str
-    date: date
+    date: date_
     category_id: int
 
 
 class ExpenseUpdate(BaseModel):
     amount: Optional[float] = None
     description: Optional[str] = None
-    date: Optional[date] = None
+    date: Optional[date_] = None
     category_id: Optional[int] = None
 
 
@@ -24,5 +24,5 @@ class ExpenseRead(BaseModel):
     id: int
     amount: float
     description: str
-    date: date
+    date: date_
     category_id: int
